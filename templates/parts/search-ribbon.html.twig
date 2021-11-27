@@ -1,0 +1,85 @@
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+        {% if '/admin/order/' in app.request.requestUri %}
+            <form class="form-inline my-2 my-lg-0"
+                  action="{{ path('order_index', {id:'id'}) }}" method="GET">
+                <label>
+                    <input class="form-control mr-sm-2" type="search" value="{{ app.request.query.get('id') }}"
+                           placeholder="Search orders by Id "
+                           aria-label="Search" name="id">
+                </label>
+                <button class="btn btn-md btn-primary" type="submit">Search</button>
+            </form>
+            <form class="form-inline"
+                  action="{{ path('order_index') }}" method="GET">
+                <label>
+                    <input class="form-control mr-sm-2 ml-sm-2" style="width: 65px" placeholder="Limit"
+                           aria-label="limit" name="limit" value="{{ app.request.query.get('limit') }}">
+                    {% if app.request.query.get('id') %}
+                        <input type="hidden" name="id" value="{{ app.request.query.get('id') }}">
+                    {% endif %}
+
+                </label>
+                <button class="btn btn-md btn-primary" type="submit">Limit</button>
+            </form>
+        {% else %}
+            {% if "/admin/" in app.request.requestUri %}
+                <form class="form-inline my-2 my-lg-0"
+                      action="{{ path('adminpr', {name:'name', category:'category'}) }}" method="GET">
+                    <label>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search products"
+                               aria-label="Search" name="name" value="{{ app.request.query.get('name') }}">
+                        {% if app.request.query.get('category') %}
+                            <input type="hidden" name="category" value="{{ app.request.query.get('category') }}">
+                        {% endif %}
+                    </label>
+                    <button class="btn btn-md btn-primary" type="submit">Search</button>
+                </form>
+            {% else %}
+                <form class="form-inline my-2 my-lg-0"
+                      action="{{ path('product_index') }}" method="GET">
+                    <label>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search products"
+                               aria-label="Search" name="name" value="{{ app.request.query.get('name') }}">
+                        {% if app.request.query.get('category') %}
+                            <input type="hidden" name="category" value="{{ app.request.query.get('category') }}">
+                        {% endif %}
+                    </label>
+                    <button class="btn btn-md btn-primary" type="submit">Search</button>
+                </form>
+            {% endif %}
+
+            {% if "/admin/" in app.request.requestUri %}
+                <form class="form-inline"
+                      action="{{ path('adminpr') }}" method="GET">
+                    <label>
+                        <input class="form-control mr-sm-2 ml-sm-2" style="width: 65px" placeholder="Limit"
+                               aria-label="limit" name="limit" value="{{ app.request.query.get('limit') }}">
+                        {% if app.request.query.get('category') %}
+                            <input type="hidden" name="category" value="{{ app.request.query.get('category') }}">
+                        {% endif %}
+                        {% if app.request.query.get('name') %}
+                            <input type="hidden" name="name" value="{{ app.request.query.get('name') }}">
+                        {% endif %}
+                    </label>
+                    <button class="btn btn-md btn-primary" type="submit">Limit</button>
+                </form>
+            {% else %}
+                <form class="form-inline"
+                      action="{{ path('product_index') }}" method="GET">
+                    <label>
+                        <input class="form-control mr-sm-2 ml-sm-2" style="width: 65px" placeholder="Limit"
+                               aria-label="limit" name="limit" value="{{ app.request.query.get('limit') }}">
+                        {% if app.request.query.get('category') %}
+                            <input type="hidden" name="category" value="{{ app.request.query.get('category') }}">
+                        {% endif %}
+                        {% if app.request.query.get('name') %}
+                            <input type="hidden" name="name" value="{{ app.request.query.get('name') }}">
+                        {% endif %}
+                    </label>
+                    <button class="btn btn-md btn-primary" type="submit">Limit</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

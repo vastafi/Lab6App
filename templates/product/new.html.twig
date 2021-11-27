@@ -1,0 +1,19 @@
+{% extends 'default.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+
+{% block content %}
+    {% include '/parts/search-ribbon.html.twig' %}
+    <h1>Create new Product</h1>
+    {% if errors is defined %}
+        <div class="alert alert-danger">
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="create-form">
+        {{ include('product/_form.html.twig') }}
+    </div>
+    <a href="{{ path('product_index') }}">back to list</a>
+{% endblock %}

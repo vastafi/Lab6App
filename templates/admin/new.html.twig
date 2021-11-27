@@ -1,0 +1,28 @@
+{% extends 'default.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+
+{% block body %}
+
+    <section class="header-main">
+        <div class="container">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="container col-xl-6 col-sm-12">
+                    <header class="card-header">
+                        <h1 class="card-title mt-2">Create new Product</h1>
+                    </header>
+                    {% if errors is defined %}
+                        <div class="alert alert-danger">
+                            {% for error in errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {{ include('admin/_form.html.twig') }}
+                    <a href="{{ path('adminpr') }}">Back to list</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

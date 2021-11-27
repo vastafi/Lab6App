@@ -1,0 +1,18 @@
+{% extends 'default.html.twig' %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block body %}
+    <section class="header-main">
+        <div class="container">
+            <a class="btn btn-warning" href="{{ path('adminpr') }}">Back to list</a>
+            <h1 align="center">Edit Product</h1>
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="container col-xl-6 col-sm-12">
+                    {{ include('admin/_form.html.twig', {'button_label': 'Update'}) }}
+                    {{ include('admin/_delete_form.html.twig') }}
+                </div> <!-- container-->
+            </div> <!-- cart -->
+        </div> <!-- container-->
+    </section>
+{% endblock %}

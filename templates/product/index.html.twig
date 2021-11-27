@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+    {% include '/parts/search-ribbon.html.twig' %}
+    <h1>Product index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>ProductImage</th>
+            <th>CreatedAt</th>
+            <th>UpdatedAt</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.code }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.productImage }}</td>
+                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
+                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('product_new') }}">Create new</a>
+{% endblock %}

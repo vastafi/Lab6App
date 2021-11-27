@@ -1,0 +1,85 @@
+<nav>
+    <ul class="pagination" style="float:right">
+        {% if (currentValues.page != 1) %}
+            {% if "/admin/" in app.request.requestUri  %}
+                {% include '/parts/pagination/link.html.twig' with {
+                    route : path(
+                        'adminpr',
+                        {page:currentValues.page - 1 , category: currentValues.category, limit: currentValues.limit, name:currentValues.name}
+                    ),
+                    value: '&laquo;'
+                }  %}
+            {% else %}
+                {% include '/parts/pagination/link.html.twig' with {
+                    route : path(
+                        'product_index',
+                        { page:currentValues.page - 1 , category: currentValues.category, limit: currentValues.limit,name:currentValues.name}
+                    ),
+                    value: '&laquo;'
+                }  %}
+            {% endif %}
+        {% endif %}
+
+        {% set hasMore = false %}
+        {% set lowerBound = 1 %}
+        {% if totalPages > 10 %}
+            {% set higherBound = min(currentValues.page + 5, totalPages) %}
+            {% set lowerBound = max(currentValues.page - 5, 1) %}
+            {% set hasMore = true %}
+        {% elseif totalPages<10 %}
+            {% set higherBound = totalPages %}
+        {% endif %}
+
+        {% if lowerBound > 1 %}
+            {% include '/parts/pagination/link.html.twig' with {route : '#', value: '...'} %}
+        {% endif %}
+
+        {% for page in lowerBound..higherBound %}
+            <li class="page-item {{ (page == currentValues.page) ? 'active' : '' }}">
+                {% if "/admin/" in app.request.requestUri  %}
+                <a class="page-link" href="{{ path('adminpr', {
+                    page:page,
+                    category: currentValues.category,
+                    limit: currentValues.limit,
+                    name:currentValues.name
+                }) }}">{{ page }}</a>
+                {% else %}
+                <a class="page-link" href="{{ path('product_index', {
+                    page:page,
+                    category: currentValues.category,
+                    limit: currentValues.limit,
+                    name:currentValues.name
+                }) }}">{{ page }}</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+
+        {% if higherBound  < totalPages %}
+            {% include '/parts/pagination/link.html.twig' with {route : '#', value: '...'} %}
+        {% endif %}
+
+        {% if (currentValues.page != totalPages) %}
+            <li class="page-item">
+                {% if "/admin/" in app.request.requestUri  %}
+                <a href="{{ path('adminpr', {
+                    page:currentValues.page + 1,
+                    category: currentValues.category,
+                    limit: currentValues.limit,
+                    name:currentValues.name
+                }) }}" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                {% else %}
+                <a href="{{ path('product_index', {
+                    page:currentValues.page + 1,
+                    category: currentValues.category,
+                    limit: currentValues.limit,
+                    name:currentValues.name
+                }) }}" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                {% endif %}
+            </li>
+        {% endif %}
+    </ul>
+</nav>

@@ -1,0 +1,16 @@
+{% set categories = productRepo.getCategories() %}
+
+{% if categories %}
+<h5 class="title black">Category</h5>
+    <nav class="nav flex-column nav-pills">
+        {% for category in categories %}
+                {% if "/admin/" in app.request.requestUri  %}
+                    <a class="nav-link" href="{{ path('adminpr', {category: category}) }}">{{ category }}</a>
+                {% elseif app.request.query.get('category') == category  %}
+                    <a class="nav-link active" href="{{ path('adminpr', {category: category}) }}">{{ category }}</a>
+                {% else  %}
+                    <a class="nav-link" href="{{ path('product_index', {category: category}) }}">{{ category }}</a>
+                {% endif %}
+        {% endfor %}
+    </nav>
+{% endif %}

@@ -1,0 +1,31 @@
+<table class="table">
+    <tbody>
+    {% for image in images %}
+        {% set fullImagePath = 'assets/main/img/gallery/' %}
+        {% set fullImagePath = fullImagePath ~ image.path %}
+        {% if loop.index0 % 4 == 0 %}
+            <tr>
+            <td>
+                <div class="image">
+                    <img src="{{ asset(fullImagePath) }}" id="{{ image.path }}" width="250" height=200"
+                         alt="Image">
+                </div>
+            </td>
+        {% else %}
+            <td>
+                <div class="image">
+                    <img src="{{ asset(fullImagePath) }}" id="{{ image.path }}" width="250" height=200"
+                         alt="Image">
+                </div>
+            </td>
+        {% endif %}
+    {% else %}
+        <tr>
+            <td colspan="9">No records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<button id="removeAll" type="button" class="btn btn-danger">Remove all</button>
+<a href="{{ path('image_new') }}" class="btn btn-primary" target="_blank">Create new image</a>

@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+
+    <br>
+    <h1 align="center">User index</h1>
+    <div class="align-items-left">
+        {% include '/user/searchRibbon.html.twig' %}
+    </div>
+    <a class="btn btn-sm btn-primary" href="{{ path('user_new') }}">Create new</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% for role in user.roles %}
+                        {{ role | replace ({'ROLE_' : ' '}) }}
+                    {% endfor %}
+                </td>
+
+                <td>
+                <td>
+                    <a class="text-info" href="{{ path('user_show', {'id': user.id}) }}">
+                        <i style="font-size: 1.5rem;" class="bi bi-eye"></i>
+                    </a>
+                    <a class="text-warning" href="{{ path('user_edit', {'id': user.id}) }}">
+                        <i style="font-size: 1.5rem;" class="bi bi-pencil"></i>
+                    </a>
+                    {{ include('user/_delete_form.html.twig', {asIcon : true}) }}
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% include '/user/paginationUser.html.twig' %}
+    <br>
+{% endblock %}
+

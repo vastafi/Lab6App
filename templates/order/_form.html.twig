@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+
+{{ form_row(form.items) }}
+
+{{ form_row(form.paymentDetails) }}
+
+
+{{ form_row(form.shippingDetails) }}
+{{ form_row(form.total) }}
+<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

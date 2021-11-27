@@ -1,0 +1,17 @@
+
+{% block body %}
+<h2>Your order has been placed!</h2>
+<h3>Here are some details:</h3>
+    <strong>Order Id:{{ order.id}}</strong><br>
+    {% for item in order.items %}
+        <strong>Product code :</strong>{{ item.code }}
+        <strong>Amount :</strong> {{ item.amount }}
+        <strong>Price :</strong> {{ item.price }}$<br>
+
+    {% endfor %}
+    <strong>Order total:</strong> {{ order.total }}$<br><br>
+
+    If you want to cancel the order click
+    <a href="{{ url('cancel_order', {'id': order.id}) }}" style="color:red;"><strong>Here</strong></a>.
+    <p style="color: #ff7b21">Once canceled, it can not be reopened again!</p>
+{% endblock %}

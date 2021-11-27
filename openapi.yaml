@@ -1,0 +1,462 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.2
+  title: Simple store
+  license:
+    name: MIT
+servers:
+  - url: http://localhost/api/v1
+paths:
+  /products:
+    get:
+      summary: Search products (paginated)
+      operationId: searchProducts
+      tags:
+        - products
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            default: 10
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: WHic page we want to obtain
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: category
+          in: query
+          description: Filter products by category
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Filter product by name (LIKE 'name%')
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paged array of products
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedCollectionOfProducts"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                SearchLimitError:
+                  value:
+                    code : 525
+                    message : "Search limit cannot exceed 100 items."
+    post:
+      summary: Create a product
+      operationId: createProduct
+      tags:
+        - products
+      requestBody:
+        description: Product information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /products/{productCode}:
+    get:
+      summary: Info for a specific product
+      operationId: getProductByCode
+      tags:
+        - products
+      parameters:
+        - name: productCode
+          in: path
+          required: true
+          description: The code of the product to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Update product by code
+      operationId: updateProductByCode
+      tags:
+        - products
+      parameters:
+        - name: productCode
+          in: path
+          required: true
+          description: The code of the product to retrieve
+          schema:
+            type: string
+      requestBody:
+        description: Product information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete product by code
+      operationId: deleteProductByCode
+      tags:
+        - products
+      parameters:
+        - name: productCode
+          in: path
+          required: true
+          description: The code of the product to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  # cart paths
+  /cart:
+    get:
+      summary: Get cart items
+      operationId: getCart
+      tags:
+        - cart
+      responses:
+        '200':
+          description: A list of cart items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      summary: update cart content
+      operationId: updateCart
+      tags:
+        - cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /order:
+    get:
+      summary: Search orders
+      operationId: searchOrders
+      tags:
+        - orders
+      parameters:
+        - name: created_after
+          in: query
+          description: Filter out orders that were created before this date
+          schema:
+            type: string
+            format: date
+        - name: created_before
+          in: query
+          description: Filter out orders that were created after this date
+          schema:
+            type: string
+            format: date
+        - name: page
+          in: query
+          description: Filter out orders that were created after this date
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: Filter out orders that were created after this date
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: A list of orders
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedCollectionOfOrders"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Process order
+      operationId: processOrder
+      description: Product information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          description: Empty response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /order/{orderId}:
+    get:
+      summary: Get orders by id
+      operationId: getOrderById
+      tags:
+        - orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Filter out orders that were created before this date
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of orders
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            $ref:  "#/components/schemas/OrderItem"
+        paymentDetails:
+          $ref:  "#/components/schemas/PaymentDetails"
+        shippingDetails:
+          $ref:  "#/components/schemas/Address"
+        total:
+          type: number
+          format: float
+
+    OrdersCollection:
+      type: array
+      items:
+        $ref:  "#/components/schemas/Order"
+
+    PaginatedCollectionOfOrders:
+      type: object
+      properties:
+        items:
+          $ref:  "#/components/schemas/OrdersCollection"
+        pagination:
+          $ref:  "#/components/schemas/Pagination"
+
+    PaymentDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [cash, credit-card]
+        currency:
+          type: string
+        details:
+          # if cash then null, else object
+          nullable: true
+          $ref:  "#/components/schemas/CreditCardDetails"
+
+    CreditCardDetails:
+      type: object
+      properties:
+        code:
+          type: string
+        cvv:
+          type: number
+        expires_at:
+          type: string
+          format: date
+
+
+    Address:
+      type: object
+      properties:
+        country:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+      required:
+        - country
+        - state
+        - city
+        - address1
+
+    OrderItem:
+      type: object
+      properties:
+        productCode:
+          type: string
+        amount:
+          type: integer
+          format: int32
+        price:
+          type: number
+          format: float
+
+    Cart:
+      type: array
+      items:
+        $ref:  "#/components/schemas/CartItem"
+
+    CartItem:
+      type: object
+      required:
+        - code
+        - amount
+      properties:
+        code:
+          type: string
+        amount:
+          type: integer
+          format: int32
+
+    Product:
+      type: object
+      required:
+        - code
+        - name
+        - category
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        productImage:
+          # relative path to product image
+          type: string
+          #later will be changed into ProductImage[]
+        price:
+          type: number
+          format: float
+        created_at:
+          type: string
+          format: date
+        updated_at:
+          nullable: true
+          type: string
+          format: date
+
+    PaginatedCollectionOfProducts:
+      type: object
+      properties:
+        items:
+          $ref:  "#/components/schemas/ProductCollection"
+        pagination:
+          $ref:  "#/components/schemas/Pagination"
+
+    ProductCollection:
+      type: array
+      items:
+        $ref: "#/components/schemas/Product"
+
+    Pagination:
+      type: object
+      properties:
+        limit:
+          type: integer
+          format: int32
+          default: 10
+          minimum: 1
+          maximum: 100
+        page:
+          type: integer
+          format: int32
+          minimum: 1
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

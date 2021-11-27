@@ -1,0 +1,145 @@
+<style>
+    .dropdown-scrollbar {
+        height: 200px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+</style>
+
+<header class="section-header py-5">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary fixed-top">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% if "/admin/" in app.request.requestUri %}
+                        <a href="{{ path('adminpr') }}" class="navbar-brand brand-wrap">
+                            <i class="bi bi-shop"></i>
+
+                        </a>
+                    {% else %}
+                        <a href="{{ path('product_index') }}" class="navbar-brand brand-wrap">
+                            <i class="bi bi-shop"></i>
+
+                        </a>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('contacts') }}">Contact <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('about') }}">About</a>
+                    </li>
+                </ul>
+                {% if "/cart/checkout" not in app.request.requestUri %} {# to hide the buttons on checkout page #}
+                <div class="navbar-nav ">
+                    <ul class="navbar-nav mr-auto">
+
+                        {% if "/admin/" in app.request.requestUri %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('product_index') }}">HOME</a>
+                            </li>
+                            {% if "/admin/user/" in app.request.requestUri %}
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ path('user_index') }}">Users</a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('user_index') }}">Users</a>
+                                </li>
+                            {% endif %}
+
+                            {% if "/admin/products" in app.request.requestUri %}
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ path('adminpr') }}">Products</a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('adminpr') }}">Products</a>
+                                </li>
+                            {% endif %}
+
+
+                        {% endif %}
+
+
+                        {% if is_granted('ROLE_ADMIN') and not ("/admin/" in app.request.requestUri) %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('adminpr') }}">ADMIN PAGE</a>
+                            </li>
+                        {% endif %}
+                        {% if app.user %}
+                            <div class="col-auto">
+                                <div class="widget-header dropdown">
+                                    <div data-toggle="dropdown" data-offset="20,10">
+                                        <button id="toggle-cart" type="button" class="btn btn-lg btn-secondary">
+                                            <i class="bi bi-cart-fill"></i>
+                                            Cart
+                                        </button>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-scrollbar">
+                                            <form class="px-4 py-3">
+                                                <h4 align="center">Shopping cart</h4>
+                                                <div class="content">
+                                                    <div class="cart-content"></div>
+                                                </div>
+                                            </form>
+                                            <div class="px-4 py-3">
+                                                <a class="go-to-cart-btn" href="{{ path('cart') }}">
+                                                    <button class="btn btn-outline-dark float-left">
+                                                        Go to cart
+                                                    </button>
+                                                </a>
+                                                <a href="{{ path('product_index') }}">
+                                                    <button class="btn btn-outline-dark  float-right">
+                                                        Go shopping
+                                                    </button>
+                                                </a>
+                                            </div>
+                                            <hr class="dropdown-divider">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <a href="{{ path('app_login') }}">
+                                <button id="toggle-cart" type="button" class="btn btn-lg btn-secondary">
+                                    <i class="bi bi-cart-fill"></i>
+                                    Cart
+                                </button>
+                            </a>
+                        {% endif %}
+
+                        {% if "user" not in app.request.requestUri %}
+                            {% if "image/gallery" not in app.request.requestUri %}
+                                <li class="nav-item">
+                                    {% include 'parts/search-ribbon.html.twig' %}
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <a href="{{ path('app_logout') }}" class="btn btn-md btn-secondary" type="button">
+                                    <i class="bi bi-door-closed"></i>
+                                    Log Out</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="{{ path('app_login') }}" class="btn btn-md btn-secondary" type="button">
+                                    <i class="bi bi-door-open"></i>
+                                    Sign In</a>
+                            </li>
+                        {% endif %}
+                        {% endif %}  {# endif for checkout #}
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+    </div>
+</header>

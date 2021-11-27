@@ -1,0 +1,17 @@
+
+.bt-5 {
+    padding: 5px;
+}
+
+.bt-red {
+    background: #EB6864;
+    color: white;
+}
+
+.closed{
+    background: rgba(5,251,5,0.31);
+}
+
+.canceled{
+    background: rgba(251,0,16,0.37);
+}

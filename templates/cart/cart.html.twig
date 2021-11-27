@@ -1,0 +1,46 @@
+{% extends 'default.html.twig' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Your Cart</h1>
+        <div class="content">
+            <div class="cart-content"></div>
+        </div>
+    </div>
+    <div class="card-body"><a href="{{ path('product_index') }}"
+                              class="btn btn-warning w-10 float-left">
+            Go shopping
+        </a>
+        <a href="{{ path('checkout') }}" class="btn btn-warning w-10 float-right" id="checkout">Checkout</a>
+    </div>
+    <section class="section-name bg-white padding-y">
+        <div class="container">
+            <header class="section-heading">
+                <h2 class="title-section">Delivery condition</h2>
+            </header>
+            <p>We collect some of your personal information (name, age, interests, e-mail, etc.) from you in
+                order to provide better service to customers.This information collected in the servers, periodical
+                campaign studies, special profiles for customer profiles and the organization of the promotion of
+                unsolicited e-mail "customer" in the work of "classification" studies only Shopping Shop. is used
+                within.
+                <br>Shopping Shop Does not share the information collected from the membership forms with third parties
+                without the information of the member in question or otherwise, does not use it for commercial purposes
+                and does not sell it for any other reason.
+                <br>E-mail addresses and membership forms, as well as the personal information requested during the use
+                of the site, the visitor movements and preferences by analyzing and interpreting.
+                This statistical data does not contain personal information, Shopping Shop can be shared with business
+                partners.
+            </p>
+        </div>
+    </section>
+    <section class="section-name bg padding-y">
+        <div class="container">
+            <h4>How do you contact us if your order does not arrive?</h4>
+            <p>We recommend contacting the supplier first. There could be a reasonable explanation for a
+                late delivery. It happens. For example, I recently bought a bathing suit online and it was
+                a couple of weeks late because of a typhoon – in my opinion, this is completely understandable.</p>
+        </div>
+    </section>
+{% endblock %}

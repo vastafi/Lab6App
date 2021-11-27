@@ -1,0 +1,11 @@
+{% set asIcon = asIcon ?? false %}
+<form method="post" action="{{ path('delete', {'id': product.id}) }}"
+        {% if asIcon %} style="display: inline" {% endif %}
+        onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+    {% if asIcon %}
+        <a onclick="$(this).closest('form').submit()" class="text-danger"><i style="font-size: 1.5rem;" class="bi bi-trash"></i></a>
+    {% else %}
+        <button class="btn btn-sm btn-danger">Delete</button>
+    {% endif %}
+</form>

@@ -1,0 +1,17 @@
+<section class="header-main">
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            {% if "/image/gallery" in app.request.requestUri %}
+                <form class="form-inline my-2 my-lg-0"
+                      action="{{ path('image_index', {tag:'tag'}) }}" method="GET">
+                    <label>
+                        <input class="form-control mr-sm-2" type="search" value="{{ app.request.query.get('tag') }}"
+                               placeholder="Search by tag"
+                               aria-label="Search" name="tag">
+                    </label>
+                    <button class="btn btn-danger my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</section>

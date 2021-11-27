@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Order{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="container col-xl-8 col-sm-12">
+                <h1>Create new Order</h1>
+
+                {{ include('order/_form.html.twig') }}
+
+                <a class="btn btn-info" href="{{ path('order_index') }}">back to list</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

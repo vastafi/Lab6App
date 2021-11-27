@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Image index{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <h1 class="mt-4 mb-5" align="center">Image index</h1>
+        <div class="align-items-left">
+            {% include '/image/searchRibbonImage.html.twig' %}
+        </div>
+        <a class="btn btn-sm btn-primary" href="{{ path('image_new') }}">Create</a>
+        {% if images is defined %}
+        <div class="container" align="center">
+            <div class="row">
+                <div class="col-xl-10 col-md-9 col-sm-12">
+                    <tr>
+                        <th>Image</th>
+                        <th>Id</th>
+                        <th>Tag</th>
+                        <th>Path</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tbody>
+                    {% for image in images %}
+                        {% set fullImagePath = 'assets/main/img/gallery/' %}
+                        {% set fullImagePath = fullImagePath ~ image.path %}
+                        <tr>
+                            <td>
+                                <img src="{{ asset(fullImagePath) }}" alt="" height="30px" width="30px">
+                            </td>
+
+                            <td>{{ image.id }}</td>
+                            <td>{{ image.tag ? image.tag|join(', ') : '' }}</td>
+                            <td>{{ image.path }}</td>
+                            <td>
+                                <div class="row">
+                                    <a style="width: 50px" class="btn btn-sm btn-warning"
+                                       href="{{ path('image_show', {'id': image.id}) }}">Show</a>
+                                    <a style="width: 50px" class="btn btn-sm btn-success"
+                                       href="{{ path('image_edit', {'id': image.id}) }}">Edit</a>
+                                    {{ include('image/_delete_form.html.twig') }}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <p>No records found</p>
+        {% endif %}
+    </table>
+    {% include '/image/paginationImages.html.twig' %}
+    <br>
+{% endblock %}

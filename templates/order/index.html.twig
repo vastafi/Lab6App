@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order index{% endblock %}
+
+{% block body %}
+    <link href="{{ asset('assets/main/css/styles.css') }}" rel="stylesheet">
+
+    <h1>Order index</h1>
+    {% include '/parts/flash.html.twig' %}
+{#    <a class="btn btn-sm btn-primary" href="{{ path('order_new') }}">Create new</a>#}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>User Email</th>
+            <th>PaymentDetails</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr style="background:
+            {% if order.status == 'Closed' %} rgba(5,251,5,0.25) {% endif %}
+            {% if order.status == 'Canceled' %} rgba(251,0,16,0.25) {% endif %}
+                    ">
+                <td>{{ order.id }}</td>
+                <td>{{ order.user.email }}</td>
+                <td>{{ order.paymentDetails ? order.paymentDetails|json_encode|replace({'["':'','"]':''}) }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.total }}$</td>
+                <td>
+                    <a class="btn btn-sm btn-danger ml-2" href="{{ path('order_show', {'id': order.id}) }}">Show</a>
+
+                    {% if order.status =='New' %}
+                        <a class="btn btn-sm btn-info ml-2 mr-2"
+                           href="{{ path('next_status', {'id': order.id, 'page': currentValues.page, 'limit': currentValues.limit, 'searchId': currentValues.id}) }}">Move to In Progress</a>
+                    {% elseif order.status == 'In Progress' %}
+                        <a class="btn btn-sm btn-warning ml-2 mr-2"
+                           href="{{ path('next_status', {'id': order.id, 'page': currentValues.page, 'limit': currentValues.limit, 'searchId': currentValues.id}) }}">Move to Sent</a>
+                    {% elseif order.status =='Sent' %}
+                        <a class="btn btn-sm btn-success ml-2 mr-2"
+                           href="{{ path('next_status', {'id': order.id, 'page': currentValues.page, 'limit': currentValues.limit, 'searchId': currentValues.id}) }}">Move to Closed</a>
+                    {% endif %}
+{#                    to redirect user on the page that he was before pressing the button#}
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% include '/order/paginationOrder.html.twig' %}
+
+{% endblock %}

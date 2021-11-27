@@ -1,0 +1,59 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        api_db_provider:
+            entity:
+                class: App\Entity\User
+                property: apiToken
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        combined_db_provider:
+            chain:
+                providers:
+                    - api_db_provider
+                    - app_user_provider
+    firewalls:
+        api:
+            pattern: ^/api/
+            provider: combined_db_provider
+            guard:
+                 authenticators:
+                    - App\Security\TokenAuthenticator
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true
+            lazy: true
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            http_basic: ~
+            logout:
+                path: app_logout
+                target: product_index
+                # where to redirect after logout
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+         - { roles: ROLE_ADMIN, path: ^/admin }
+         - { roles: ROLE_USER,  path: ^/api/v1/cart }
+         - { roles: ROLE_ADMIN, path: ^/api/v1/order }
+         - { roles: ROLE_USER,  path: ^/api/v1, methods: [GET] }
+         - { roles: ROLE_ADMIN, path: ^/api/v1 }
+        # - { path: ^/profile, roles: ROLE_USER }

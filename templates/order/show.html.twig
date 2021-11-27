@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="container col-xl-6 col-sm-12">
+                <h1>Order</h1>
+
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ order.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Items</th>
+                        <td>
+                            {% for item in order.items %}
+
+                                <strong>Code:</strong> {{ item.code }}
+                                <strong>Amount:</strong> {{ item.amount }}
+                                <strong>Price:</strong> {{ item.price }}$<br>
+
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>PaymentDetails</th>
+                        <td>{{ order.paymentDetails ? order.paymentDetails|json_encode|replace({'["': ' ','"]': ' '}) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>{{ order.status }}</td>
+                    </tr>
+                    <tr>
+                        <th>ShippingDetails<br>
+                            {% if order.status =='New' or order.status == 'In Progress' %}
+                                <a class="btn btn-sm btn-primary ml-2 mr-2"
+                                   href="{{ path('order_edit', {'id': order.id}) }}">Edit</a>
+                            {% endif %}</th>
+
+                        <td>
+
+                            <strong>City:</strong> {{ order.shippingDetails.city }}<br>
+                            <strong>State:</strong> {{ order.shippingDetails.state }}<br>
+                            <strong>Country:</strong> {{ order.shippingDetails.country }}<br>
+                            <strong>Address:</strong> {{ order.shippingDetails.address1 }}<br>
+                            {% if order.shippingDetails.address2 != '' or order.shippingDetails.address2 != null %}
+                                <strong>Address2:</strong> {{ order.shippingDetails.address2 }}
+                            {% endif %}
+                            <br>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <td>{{ order.total }}$</td>
+                    </tr>
+                    <tr>
+                        <th>User Email</th>
+                        <td>{{ order.user.email }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <a class="btn btn-info" href="{{ path('order_index') }}">Back to list</a>
+
+                {% if order.status =='New' or order.status == 'In Progress' %}
+                    {{ include('order/_delete_form.html.twig') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

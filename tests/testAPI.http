@@ -1,0 +1,42 @@
+GET http://localhost:80/api/item?id=99
+Accept: application/json
+
+###
+GET http://localhost:8000/api/v1/products/AB107
+Accept: application/json
+
+###
+GET http://localhost:8000/api/v1/products
+Accept: application/json
+
+###
+GET http://localhost:8000/api/v1/products?limit=4
+Accept: application/json
+
+###
+GET http://localhost:8000/api/v1/products?name=galaxy
+Accept: application/json
+
+###
+GET http://localhost:8000/api/v1/products?limit=2&name=galaxy
+Accept: application/json
+
+###
+POST http://localhost:8000/api/v1/products/
+Content-Type: application/json
+
+{
+  "code":"AB98012",
+  "name":"Epson",
+  "category":"Printers",
+  "price":600,
+  "description":"Black, laser base",
+  "productImage":null,
+  "availableAmount": 5
+}
+
+
+
+
+
+

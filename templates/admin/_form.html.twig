@@ -1,0 +1,73 @@
+{{ form_start(form) }}
+    {% if "edit" in app.request.requestUri %}
+        <label>Code</label>
+        {{ form_widget(form.code, {'value' : app.request.get('productCode'), 'attr':{'readonly':'readonly'}}) }}
+    {% endif %}
+    {{ form_widget(form) }}
+
+<button id="addImage" type="button" class="btn btn-primary">Add image</button>
+<input id="test" type="text" class="form-control">
+<div class="gallery-fragment" id="fragment"></div>
+<div class="mt-3">
+    <button type="submit" class="btn btn-success">{{ button_label|default('Save') }}</button>
+</div>
+{{ form_end(form) }}
+
+<script>
+    let $ = jQuery;
+    $("#product_img_path").prop( "type", "hidden" );
+    $("#test").prop( "disabled", true );
+    $("#test").val($("#product_productImages").val());
+
+    function appendImagePath(e) {
+        let currImgList = $("#product_productImages").val();
+        let currImgArray = currImgList.split(",")
+        if (currImgArray.length === 3) {
+            $('#fragment').empty();
+        }
+        if (currImgArray.length < 4) {
+
+            let newImg = $(e).attr("id");
+            let path;
+
+            if (currImgList.length === 0) {
+                path = newImg;
+            } else {
+                path = currImgList + ", " + newImg;
+            }
+            $("#product_productImages").val(path);
+            $("#test").val(path);
+        } else {
+            $('#fragment').empty();
+        }
+    }
+
+    $(document).on('click', '.image img', function () {
+        appendImagePath(this);
+    });
+
+    $(document).on('click', "#removeAll", function () {
+        $("#product_productImages").val("");
+        $("#test").val("");
+    });
+
+    $("#addImage").on('click', function () {
+        fetch("{{ path("gallery_fragment") }}")
+            .then(function (response) {
+                response
+                    .text()
+                    .then(function (result) {
+                        $('#fragment').append(result)
+                    });
+            })
+            .catch(function () {
+                console.log("You died.")
+            });
+    });
+
+    $(document).on('click', function (e) {
+        if (e.target.id !== 'gallery-fragment' && $(e.target).closest('#fragment').length === 0) {
+            $('#fragment').empty();
+        }
+    });
+</script>

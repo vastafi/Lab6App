@@ -1,0 +1,131 @@
+{% extends 'default.html.twig' %}
+
+{% block title %} Products details {% endblock %}
+
+{% block content %}
+    <section class="section-content bg padding-y-sm">
+        <div class="container">
+            <div class="row">
+                <div class="row no-gutters">
+                    <aside class="col-sm-6 border-right">
+                        {% if product.productImages is not null %}
+                            <article class="gallery-wrap">
+                                {% for path in product.productImages %}
+                                {% set fullImagePath = 'assets/main/img/gallery/' %}
+                                {% set fullImagePath = fullImagePath ~ path|trim(' ') %}
+                                {% if loop.index == 1 %}
+                                <div class="img-wrap">
+                                    <img src="{{ asset(fullImagePath) }}" id="expandedImg"
+                                         onclick="expandImage(this);">
+                                </div>
+                                {% else %}
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="img-small-wrap">
+                                        <div class="item-gallery">
+                                            <img src="{{ asset(fullImagePath) }}" alt="{{ loop.index }}"
+                                                 onclick="expandImage(this);">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </article>
+                        {% else %}
+                            <article class="gallery-wrap">
+                                <div class="img-wrap">
+                                    <div><a href="https://via.placeholder.com/600x400" data-fancybox=""><img
+                                                    src="https://via.placeholder.com/600x400"
+                                                    class="img-fuid"></a>
+                                    </div>
+                                </div>
+                                <div class="img-small-wrap">
+                                    {% for i in range(1,3) %}
+                                        <div class="item-gallery"><a
+                                                    href="{{ asset('assets/main/img/600x400.png') }}"
+                                                    data-fancybox=""><img
+                                                        src="{{ asset('assets/main/img/600x400.png') }}"></a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </article>
+                        {% endif %}
+                    </aside>
+                    <aside class="col-sm-6">
+                        <article class="card-body">
+                            <h3 class="title mb-3">{{ product.name }}</h3>
+                            <h2>{{ product.price }} €</h2>
+                            <span>one unity</span>
+                            <dl>
+                                <dt>Description:</dt>
+                                <dd><p>{{ product.description }} </p></dd>
+                                <br><b>Category: </b>{{ product.category }}
+                                <br><b>Available amount: </b>
+                                <p id="avail">{{ product.availableAmount }}</p>
+                            </dl>
+                            <hr>
+                            {% if app.user %}
+                                <a href="{{ path('cart_add', {'productCode':product.code}) }}"
+                                   class="btn btn-md btn-primary" id="add_cart"> <i class="fa fa-envelope"></i> Add to
+                                    Cart
+                                </a>
+                            {% else %}
+                                <a href="{{ path('app_login') }}" class="btn btn-md btn-primary" id="add_cart"> <i
+                                            class="fa fa-envelope"></i> Add to
+                                    Cart
+                                </a>
+                            {% endif %}
+                        </article>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if app.user %}
+        <script>
+            $(document).on('click', '#add_cart', function (e) {
+                e.preventDefault();
+                fetch("{{ path("cart_add", {'productCode':product.code}) }}", {method: 'POST'})
+                    .then(function (res) {
+                        console.log(res.status);
+                        if (res.status === 400) {
+                            alert('We dont have so many products');
+                        } else if (res.status === 200) {
+                            alert('Product added to cart');
+                            showCart();
+                        }
+                    })
+                    .catch(function () {
+                        console.log("You died.")
+                    });
+            })
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block right_sidebar %}
+    <div class="card">
+        <div class="card-header">
+            Trade Assurance
+        </div>
+        <div class="card-body small">
+            <span>Trading Company</span>
+            <hr>
+            Transaction Level: Good <br>
+            11 Transactions $330,000+
+            <hr>
+            Response Time 24h <br>
+            Response Rate: 94% <br>
+            <hr>
+            <a href="">Visit pofile</a>
+        </div>
+    </div>
+    <script>
+        function expandImage(imgs) {
+            const expandImg = document.getElementById("expandedImg");
+            const temp = expandImg.src;
+            expandImg.src = imgs.src;
+            imgs.src = temp;
+            expandImg.parentElement.style.display = "block";
+        }
+    </script>
+{% endblock %}

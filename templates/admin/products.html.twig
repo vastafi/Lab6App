@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Products {% endblock %}
+
+{% block body %}
+    {% include '/parts/flash.html.twig' %}
+    <div class="row">
+        <aside class="col-sm-12 col-md-6 col-xl-2 col-lg-2 white">
+            {% include '/parts/categories.html.twig' %}
+        </aside>
+        <div class="col-lg-10 col-xl-10 col-md-6 col-sm-12">
+            <div class="row">
+                <div class="col-md-9">
+                    <h1>Products</h1>
+                </div>
+                <div class="col-md-3">
+                    <a class="float-right btn btn-md btn-primary" href="{{ path('pr_new') }}">Create</a>
+                </div>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Id</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>ProductImage</th>
+                    <th>Available amount</th>
+                    <th>CreatedAt</th>
+                    <th>UpdatedAt</th>
+                    <th>Actions</th>
+                </tr>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.code }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>
+                            {% for image in product.productImages %}
+                                {{ image }},
+                            {% endfor %}
+                        </td>
+                        <td>{{ product.availableAmount }}</td>
+                        <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a class="text-info" href="{{ path('show', {'productCode': product.code}) }}">
+                                <i style="font-size: 1.5rem;" class="bi bi-eye"></i>
+                            </a>
+                            <a class="text-warning" href="{{ path('edit', {'productCode': product.code}) }}">
+                                <i style="font-size: 1.5rem;" class="bi bi-pencil"></i>
+                            </a>
+                            {{ include('admin/_delete_form.html.twig', {asIcon : true}) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% include '/parts/pagination.html.twig' %}<br>
+{% endblock %}
+
+

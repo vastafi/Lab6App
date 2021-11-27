@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<body background="{{ asset('assets/main/img/symphony.jpg') }} ">
+<div class="row">
+    <div class="col-md-2">
+        {% include '/parts/categories.html.twig' %}
+    </div>
+    <div class="col-md-8">
+        {% block content %}{% endblock %}
+    </div>
+    <aside class="col-md-2">
+        {% block right_sidebar %}{% endblock %}
+    </aside>
+</div>
+{% endblock %}

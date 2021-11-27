@@ -1,0 +1,28 @@
+<style>
+ img{
+  width: 8%;
+  height: auto;
+ }
+ .cards{
+  font-size: 15px;
+  color: rgba(0,0,0,0.50)
+ }
+</style>
+{{ form_start(form) }}
+
+{{ form_row(form.paymentDetails) }}
+<div class="col" id="ccd">
+ <div class="cards">
+  Supported payment methods:
+  <img src="{{ asset('assets/main/img/cards/visa.png') }}" alt="Visa">
+  <img src="{{ asset('assets/main/img/cards/mastercard.png') }}" alt="MasterCard">
+  <img src="{{ asset('assets/main/img/cards/maestro.png') }}" alt="Maestro">
+  <img src="{{ asset('assets/main/img/cards/amex.png') }}" alt="Amex">
+ </div>
+ {{ form_row(form.creditCardDetails) }}
+</div>
+{{ form_row(form.shippingDetails) }}
+
+
+
+{{ form_end(form) }}

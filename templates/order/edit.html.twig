@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Order{% endblock %}
+
+{% block body %}
+    <script src="{{ asset('assets/main/js/order_edit.js') }}"></script>
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="container col-xl-8 col-sm-12">
+                <h1>Edit Shipping Details</h1>
+
+                {{ include('order/_form_edit.html.twig', {'button_label': 'Update'}) }}
+
+                <a class="btn btn-info" href="{{ path('order_show', {'id': order.id}) }}">back to Order</a>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

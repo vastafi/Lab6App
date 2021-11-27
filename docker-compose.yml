@@ -1,0 +1,57 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+services:
+
+    parser:
+      image: rapiok/999:latest
+      restart: always
+      ports:
+        - "9000:3000"
+    mailhog:
+      image: mailhog/mailhog:latest
+      container_name: simplestore-mailhog
+      ports:
+        - "8001:8025"
+
+    redis:
+      image: redis:alpine
+      container_name: simplestore-redis
+
+    mysql:
+      image: mysql:8.0
+      container_name: simplestore-mysql
+      working_dir: /application
+      volumes:
+        - .:/application
+        - my-datavolume:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=simpleStore
+        - MYSQL_USER=database_user
+        - MYSQL_PASSWORD=database_password
+      ports:
+        - "8002:3306"
+
+    webserver:
+      image: nginx:alpine
+      container_name: simplestore-webserver
+      working_dir: /application
+      volumes:
+          - .:/application
+          - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+       - "8000:80"
+
+    php-fpm:
+      build: phpdocker/php-fpm
+      container_name: simplestore-php-fpm
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+volumes:
+  my-datavolume:
+
+

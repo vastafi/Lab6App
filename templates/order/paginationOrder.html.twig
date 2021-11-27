@@ -1,0 +1,39 @@
+<nav>
+    <ul class="pagination" style="float:right">
+        {% if (currentValues.page != 1) %}
+            <li class="page-item">
+                {% if "/admin/order/" in app.request.requestUri %}
+                    <a href="{{ path('order_index', {
+                        page:currentValues.page - 1 ,
+                        limit: currentValues.limit
+                    }) }}" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                {% endif %}
+            </li>
+        {% endif %}
+        {% for page in 1..totalPages %}
+            <li class="page-item {{ (page == currentValues.page) ? 'active' : '' }}">
+                {% if "/admin/order/" in app.request.requestUri %}
+                    <a class="page-link" href="{{ path('order_index', {
+                        page:page,
+                        limit: currentValues.limit
+                    }) }}">{{ page }}</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+        {% if (currentValues.page != totalPages) %}
+            <li class="page-item">
+                {% if "/admin/order/" in app.request.requestUri %}
+                    <a href="{{ path('order_index', {
+                        page:currentValues.page + 1,
+                        limit: currentValues.limit
+                    }) }}" class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                {% endif %}
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+<br>
