@@ -1,13 +1,22 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/tmp
     docker:
-      - image: circleci/build-image
+      # Specify the version you desire here
+      - image: circleci/php:7.4-node-browsers
     steps:
-       - setup_remote_docker
-      - run:
-          name: Start all services declared in docker-compose.yml
-          command: |
-            docker-compose up -d
-      - run: npm run test:unit
+      - checkout
+      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
+      - run: sudo docker-php-ext-install zip
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            # "composer.lock" can be used if it is committed to the repo
+            - v1-dependencies-{{ checksum "composer.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - save_cache:
+          key: v1-dependencies-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
