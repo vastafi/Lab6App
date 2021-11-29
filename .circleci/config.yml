@@ -25,7 +25,4 @@ jobs:
           paths:
             - ./vendor
 
-      # run tests with phpunit
-      - run:
-          name: "Run tests"
-          command: composer test
+     
